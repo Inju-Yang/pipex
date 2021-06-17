@@ -30,6 +30,6 @@ clean:
 	$(RM) $(PIPEX_O) $(NAME)
 
 fclean: clean
-	make fclean
+	$(RM) out
 
 re:	fclean all

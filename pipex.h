@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:32:26 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/17 16:44:07 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/18 04:24:40 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 # define PIPEX_H
 
 # include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
 
-int		main(int ac, char **av, char **envp);
+int main(int argc, char const *argv[]);
 
 #endif
