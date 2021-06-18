@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:32:26 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/18 16:15:29 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/18 16:47:43 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@
 
 typedef struct		s_cmd
 {
-	const char		*cmd;
-	char * const	*argv;
-	char * const	*envp;
+	const char	*cmd[5];
+	char *const	*argv;
+	char *const	*envp;
 }					t_cmd;
 
-int main(int ac, char **av, char **envp);
+int main(int ac, char **av);
 
 #endif

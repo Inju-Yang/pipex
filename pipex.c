@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:30:32 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/18 16:26:55 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/18 16:47:56 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,29 +140,30 @@ char			**ft_split(char const *s, char c)
 	return (all);
 }
 
-static void	cmd_init(const char *cmd, t_cmd *strt)
+static void	cmd_init(char *argv, t_cmd *strt)
 {
 	char	**chunk;
 
-	chunk = ft_split(cmd, ' ');
+	chunk = ft_split(argv, ' ');
 	strt->cmd[0] = ft_strjoin("/bin/", chunk[0]);
 	strt->cmd[1] = ft_strjoin("/usr/local/bin/", chunk[0]);
 	strt->cmd[2] = ft_strjoin("/usr/bin/", chunk[0]);
 	strt->cmd[3] = ft_strjoin("/usr/sbin/", chunk[0]);
 	strt->cmd[4] = ft_strjoin("/sbin/", chunk[0]);
 	strt->argv = (char *const *)chunk;
-	strt->argv[5] = NULL;
+	strt->envp = NULL;
 }
 
-static void	run_cmd(const char *cmd, t_cmd *cmd_arg)
+static void	run_cmd(char *cmd)
 {
-	int i;
+	int		i;
+	t_cmd	cmd_arg;
 
 	i = 0;
-	cmd_init(cmd, cmd_arg);
+	cmd_init(cmd, &cmd_arg);
 	while(i < 5)
-		execve(&cmd_arg->cmd[i++], cmd_arg->argv, cmd_arg->envp);
-	perror(cmd_arg->argv[0]);
+		execve(cmd_arg.cmd[i++], cmd_arg.argv, cmd_arg.envp);
+	perror(cmd_arg.argv[0]);
 }
 
 int	redirect_out(const char *file)
@@ -202,11 +203,10 @@ int	redirect_in(const char *file)
 	return (0);
 }
 
-int main(int ac, char **av, char **envp)
+int main(int ac, char **av)
 {
 	int		pipefd[2];
 	pid_t	pid;
-	t_cmd	cmd_arg;
 
 	if (ac != 5)
 		return (0);
@@ -217,13 +217,13 @@ int main(int ac, char **av, char **envp)
 	{
 		redirect_out(FILE_2);
 		connect_pipe(pipefd, STDIN_FILENO);
-		run_cmd(CMD_2, &cmd_arg);
+		run_cmd(CMD_2);
 	}
 	else if (pid == CHILD)
 	{
 		redirect_in(FILE_1);
 		connect_pipe(pipefd, STDOUT_FILENO);
-		run_cmd(CMD_1, &cmd_arg);
+		run_cmd(CMD_1);
 	}
 	return 0;
 }
