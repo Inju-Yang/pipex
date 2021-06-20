@@ -1,38 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/17 16:32:26 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/20 18:32:47 by inyang           ###   ########.fr       */
+/*   Created: 2020/10/09 19:36:07 by inyang            #+#    #+#             */
+/*   Updated: 2020/10/23 15:27:30 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include "./libft/libft.h"
-
-# define CHILD	0
-
-# define FILE_1	av[1]
-# define FILE_2	av[4]
-# define CMD_1	av[2]
-# define CMD_2	av[3]
-
-typedef struct		s_cmd
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	const char	*cmd[5];
-	char *const	*argv;
-	char *const	*envp;
-}					t_cmd;
+	size_t	dst_len;
+	size_t	result;
+	int		i;
+	int		j;
 
-int main(int ac, char **av);
-
-#endif
+	dst_len = ft_strlen(dst);
+	result = ft_strlen(src);
+	i = 0;
+	j = dst_len;
+	while ((src[i] != '\0') && i < (int)(size - dst_len - 1))
+	{
+		dst[j] = src[i];
+		i++;
+		j++;
+	}
+	dst[j] = '\0';
+	if (size < dst_len)
+		result += size;
+	else
+		result += dst_len;
+	return (result);
+}

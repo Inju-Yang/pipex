@@ -1,38 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/17 16:32:26 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/20 18:32:47 by inyang           ###   ########.fr       */
+/*   Created: 2020/10/05 20:51:31 by yang              #+#    #+#             */
+/*   Updated: 2020/10/07 17:30:51 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include "./libft/libft.h"
-
-# define CHILD	0
-
-# define FILE_1	av[1]
-# define FILE_2	av[4]
-# define CMD_1	av[2]
-# define CMD_2	av[3]
-
-typedef struct		s_cmd
+int	ft_isascii(int i)
 {
-	const char	*cmd[5];
-	char *const	*argv;
-	char *const	*envp;
-}					t_cmd;
-
-int main(int ac, char **av);
-
-#endif
+	if (i >= 0 && i <= 127)
+		return (1);
+	else
+		return (0);
+}

@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/17 16:32:26 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/20 18:32:47 by inyang           ###   ########.fr       */
+/*   Created: 2020/10/09 16:59:28 by inyang            #+#    #+#             */
+/*   Updated: 2020/10/09 17:47:03 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include "./libft/libft.h"
-
-# define CHILD	0
-
-# define FILE_1	av[1]
-# define FILE_2	av[4]
-# define CMD_1	av[2]
-# define CMD_2	av[3]
-
-typedef struct		s_cmd
+size_t	ft_strlcpy(char *dest, const char *source, size_t size)
 {
-	const char	*cmd[5];
-	char *const	*argv;
-	char *const	*envp;
-}					t_cmd;
+	size_t	i;
+	size_t	j;
 
-int main(int ac, char **av);
-
-#endif
+	if (*dest == '\0' || *source == '\0')
+		return (0);
+	j = 0;
+	while (source[j])
+		j++;
+	if (size == 0)
+		return (j);
+	i = 0;
+	while (source[i] != '\0' && i < size - 1)
+	{
+		dest[i] = source[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (j);
+}

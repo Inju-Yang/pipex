@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/17 16:32:26 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/20 18:32:47 by inyang           ###   ########.fr       */
+/*   Created: 2020/10/07 21:02:50 by inyang            #+#    #+#             */
+/*   Updated: 2020/10/09 21:14:36 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include "./libft/libft.h"
-
-# define CHILD	0
-
-# define FILE_1	av[1]
-# define FILE_2	av[4]
-# define CMD_1	av[2]
-# define CMD_2	av[3]
-
-typedef struct		s_cmd
+char		*ft_strchr(const char *str, int c)
 {
-	const char	*cmd[5];
-	char *const	*argv;
-	char *const	*envp;
-}					t_cmd;
+	char	*s;
+	char	a;
+	int		i;
 
-int main(int ac, char **av);
-
-#endif
+	s = (char *)str;
+	a = (char)c;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == a)
+			return (s + i);
+		i++;
+	}
+	if (a == '\0')
+		return (s + i);
+	if (s == 0)
+		return (s);
+	return (0);
+}

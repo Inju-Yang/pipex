@@ -1,38 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/17 16:32:26 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/20 18:32:47 by inyang           ###   ########.fr       */
+/*   Created: 2020/10/14 20:28:01 by inyang            #+#    #+#             */
+/*   Updated: 2020/10/14 20:59:50 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
+#include <stdlib.h>
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include "./libft/libft.h"
-
-# define CHILD	0
-
-# define FILE_1	av[1]
-# define FILE_2	av[4]
-# define CMD_1	av[2]
-# define CMD_2	av[3]
-
-typedef struct		s_cmd
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	const char	*cmd[5];
-	char *const	*argv;
-	char *const	*envp;
-}					t_cmd;
+	char			*str;
+	unsigned int	i;
+	unsigned int	len;
 
-int main(int ac, char **av);
-
-#endif
+	if (!s || !(*f))
+		return (NULL);
+	len = 0;
+	while (s[len])
+		len++;
+	if (!(str = (char *)malloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	i = 0;
+	while (s[i])
+	{
+		str[i] = f(i, s[i]);
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}

@@ -1,38 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/17 16:32:26 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/20 18:32:47 by inyang           ###   ########.fr       */
+/*   Created: 2020/10/06 23:44:56 by yang              #+#    #+#             */
+/*   Updated: 2020/10/09 21:04:01 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include "./libft/libft.h"
-
-# define CHILD	0
-
-# define FILE_1	av[1]
-# define FILE_2	av[4]
-# define CMD_1	av[2]
-# define CMD_2	av[3]
-
-typedef struct		s_cmd
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	const char	*cmd[5];
-	char *const	*argv;
-	char *const	*envp;
-}					t_cmd;
+	unsigned char	*set_dst;
+	unsigned char	*set_src;
+	size_t			i;
 
-int main(int ac, char **av);
-
-#endif
+	if (dst == 0 && src == 0)
+		return (0);
+	set_dst = dst;
+	set_src = (unsigned char *)src;
+	i = 0;
+	while (i < n)
+	{
+		set_dst[i] = set_src[i];
+		i++;
+	}
+	return (dst);
+}

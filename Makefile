@@ -10,8 +10,8 @@ PIPEX_F			=	./pipex.c\
 
 PIPEX_O			=	./pipex.o\
 
-LIBFT_D			=	./assets/libft/
-LIBFT_A			=	./assets/libft/libft.a
+LIBFT_D			=	./libft/
+LIBFT_A			=	./libft/libft.a
 
 .PHONY:	all clean fclean re bonus
 
@@ -20,7 +20,8 @@ all: $(NAME)
 bonus: $(CHECK_NAME)
 
 $(NAME): $(PIPEX_O)
-	$(CC) $(CFLAGS_42) $(PIPEX_F)
+	make -C $(LIBFT_D)
+	$(CC) $(CFLAGS_42) $(LIBFT_A) $(PIPEX_F)
 	mv a.out $(NAME)
 
 .c.o:
@@ -31,5 +32,6 @@ clean:
 
 fclean: clean
 	$(RM) out
+	make fclean -C $(LIBFT_D)
 
 re:	fclean all

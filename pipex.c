@@ -6,139 +6,11 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:30:32 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/18 16:47:56 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/20 18:35:35 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-size_t	ft_strlen(const char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	unsigned int	s1_len;
-	unsigned int	s2_len;
-	unsigned int	i;
-	unsigned int	j;
-	char			*str;
-
-	if (!(s1) || !(s2))
-		return (NULL);
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
-	i = 0;
-	j = -1;
-	if (!(str = malloc(sizeof(char) * (s1_len + s2_len + 1))))
-		return (NULL);
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	while (s2[++j])
-		str[i++] = s2[j];
-	str[i] = '\0';
-	return (str);
-}
-
-static size_t	ft_cnt(char const *s, char c)
-{
-	size_t	cnt;
-
-	cnt = 0;
-	while (*s)
-	{
-		if (*s == c)
-			s++;
-		else
-		{
-			while (*s && *s != c)
-				s++;
-			cnt++;
-		}
-	}
-	return (cnt);
-}
-
-static int		ft_n_malloc(char **all, size_t k, size_t cnt)
-{
-	if (!(all[k] = malloc(cnt + 1)))
-	{
-		while (k > 0)
-		{
-			k--;
-			free(all[k]);
-		}
-		free(all);
-		return (1);
-	}
-	return (0);
-}
-
-static size_t	ft_index(size_t *i, char const *s, char c)
-{
-	size_t	cnt;
-
-	cnt = 0;
-	while (s[*i] != c && s[*i])
-	{
-		(*i)++;
-		cnt++;
-	}
-	return (cnt);
-}
-
-static int		ft_fill(char const *s, char c, char **all)
-{
-	size_t	i;
-	size_t	j;
-	size_t	k;
-	size_t	l;
-	size_t	cnt;
-
-	i = 0;
-	k = 0;
-	while (s[i])
-	{
-		while (s[i] == c)
-			i++;
-		if (!s[i])
-			break ;
-		cnt = ft_index(&i, s, c);
-		if (ft_n_malloc(all, k, cnt))
-			return (1);
-		l = 0;
-		j = i - cnt;
-		while (j < i)
-			all[k][l++] = (char)s[j++];
-		all[k++][l] = '\0';
-	}
-	return (0);
-}
-
-char			**ft_split(char const *s, char c)
-{
-	size_t	len;
-	char	**all;
-
-	if (!s)
-		return (NULL);
-	len = ft_cnt(s, c);
-	if (!(all = malloc(sizeof(char *) * (len + 1))))
-		return (NULL);
-	if (ft_fill(s, c, all))
-		return (NULL);
-	all[len] = NULL;
-	return (all);
-}
 
 static void	cmd_init(char *argv, t_cmd *strt)
 {
@@ -184,8 +56,8 @@ int	redirect_out(const char *file)
 static void	connect_pipe(int pipefd[2], int io)
 {
 	dup2(pipefd[io], io);
-	close(pipefd[0]);
-	close(pipefd[1]);
+	close(pipefd[0]); //pipefd[0] == sth -> STDIN
+	close(pipefd[1]); //pipefd[1] == sth -> STDOUT
 }
 
 int	redirect_in(const char *file)
@@ -195,7 +67,7 @@ int	redirect_in(const char *file)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		perror(file); //perror를 통해 stderr인 
+		perror(file);
 		return (-1);
 	}
 	dup2(fd, STDIN_FILENO);
@@ -203,7 +75,7 @@ int	redirect_in(const char *file)
 	return (0);
 }
 
-int main(int ac, char **av)
+int pipex(int ac, char **av)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -225,5 +97,21 @@ int main(int ac, char **av)
 		connect_pipe(pipefd, STDOUT_FILENO);
 		run_cmd(CMD_1);
 	}
+	return 0;
+}
+
+int main(int ac, char **av)
+{
+	pid_t	pid;
+
+	if (ac != 5)
+		return (0);
+	pid = fork();
+	if (pid < 0)
+		perror("Pid Error here\n");
+	if (pid > 0)
+		wait(&pid);
+	else if (pid == CHILD)
+		pipex(ac, av);
 	return 0;
 }
