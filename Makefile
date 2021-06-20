@@ -7,8 +7,10 @@ ARFLAGS			=	rcs
 RM				=	rm -rf
 
 PIPEX_F			=	./pipex.c\
+					./pipex_utils.c
 
 PIPEX_O			=	./pipex.o\
+					./pipex_utils.o
 
 LIBFT_D			=	./libft/
 LIBFT_A			=	./libft/libft.a
