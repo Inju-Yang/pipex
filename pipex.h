@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:32:26 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/21 17:20:27 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/21 22:19:14 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # include <fcntl.h>
 # include "./libft/libft.h"
 
-# define CHILD	0
-
 typedef struct	s_cmd
 {
 	const char	*cmd[5];
@@ -29,7 +27,7 @@ typedef struct	s_cmd
 }				t_cmd;
 
 int				main(int ac, char **av);
-int				pipex(int ac, char **av);
+int				pipex(char **av);
 
 int				redirect_in(const char *file);
 void			connect_pipe(int pipefd[2], int io);
