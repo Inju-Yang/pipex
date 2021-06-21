@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:30:32 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/20 18:44:23 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/21 17:05:16 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ int	main(int ac, char **av)
 	pid = fork();
 	if (pid < 0)
 		perror("Pid Error here\n");
-	if (pid > 0)
+	if (pid > 0)// 부모프로세서가 됐다면 이 프로세서는 기다리기
 		wait(&pid);
-	else if (pid == CHILD)
+	else if (pid == CHILD)//자식프로세서가 됐다면 이 프로세서 실행
 		pipex(ac, av);
 	return (0);
 }

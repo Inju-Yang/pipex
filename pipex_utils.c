@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/20 18:45:06 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/21 17:21:17 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	cmd_init(char *argv, t_cmd *strt)
 	strt->envp = NULL;
 }
 
-static void	run_cmd(char *cmd)
+void		run_cmd(char *cmd)
 {
 	int		i;
 	t_cmd	cmd_arg;
@@ -53,7 +53,7 @@ int			redirect_out(const char *file)
 	return (0);
 }
 
-static void	connect_pipe(int pipefd[2], int io)
+void		connect_pipe(int pipefd[2], int io)
 {
 	dup2(pipefd[io], io);
 	close(pipefd[0]); //pipefd[0] == sth -> STDIN
