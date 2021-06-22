@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:30:32 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/22 20:59:22 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/22 21:32:08 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	pipex(char **av)
 	{
 		redirect_in(av[1]);
 		connect_pipe(pipefd, STDOUT_FILENO);
-		run_cmd(av[2]);
+		run_cmd(av[3]);
 	}
 	return (0);
 }
@@ -45,7 +45,7 @@ void	fork_process(char **av)
 	if (pid > 0)// 부모프로세서가 됐다면 이 프로세서는 기다리기
 		wait(&pid);
 	else if (pid == 0)//자식프로세서가 됐다면 이 프로세서 실행
-		pipex(av);
+		cmd_1(av);
 }
 
 int	main(int ac, char **av)
@@ -59,7 +59,7 @@ int	main(int ac, char **av)
 		while ((value = px_gnl(&line)) > 0)
 		{
 			if (px_strcmp(line, av[2]) == 0)
-				return (0);
+				cmd_2()
 			fork_process(av);
 		}
 	}

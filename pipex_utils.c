@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/22 20:57:27 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/22 21:42:08 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int			redirect_out(const char *file)
 {
 	int fd;
 
-	fd = open(file, O_RDWR | O_CREAT | O_APPEND, 0644);
+	fd = open(file, O_RDWR | O_CREAT, 0644);
 	if (fd < 0)
 	{
 		perror(file);

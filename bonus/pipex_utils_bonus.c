@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/22 20:59:41 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/22 21:42:04 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int			redirect_out(const char *file)
 {
 	int fd;
 
-	fd = open(file, O_RDWR | O_CREAT, 0644);
+	fd = open(file, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
 		perror(file);
@@ -60,6 +60,24 @@ void		connect_pipe(int pipefd[2], int io)
 	close(pipefd[1]); //pipefd[1] == sth -> STDOUT
 }
 
+int			cmd_1(char **av)
+{
+	int		fd;
+	pid_t	pid;
+
+	pid = fork();
+	if (pid > 0)
+	{
+		fd = 1;
+		dup2(fd, 0);
+		close(fd);
+	}
+	if (pid == 0)
+	{
+		
+		run_cmd(av[3]);
+	}
+}
 int			redirect_in(const char *file)
 {
 	int fd;
