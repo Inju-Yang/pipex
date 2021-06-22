@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/22 21:42:08 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/22 22:39:28 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int			redirect_out(const char *file)
 {
 	int fd;
 
+	printf("1111111111\n");
 	fd = open(file, O_RDWR | O_CREAT, 0644);
 	if (fd < 0)
 	{
@@ -55,6 +56,7 @@ int			redirect_out(const char *file)
 
 void		connect_pipe(int pipefd[2], int io)
 {
+	printf("this is io %d\n", io);
 	dup2(pipefd[io], io);
 	close(pipefd[0]); //pipefd[0] == sth -> STDIN
 	close(pipefd[1]); //pipefd[1] == sth -> STDOUT
@@ -64,6 +66,7 @@ int			redirect_in(const char *file)
 {
 	int fd;
 
+	printf("2222222222222\n");
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{

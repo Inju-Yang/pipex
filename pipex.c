@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:30:32 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/22 20:57:04 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/22 22:37:56 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,17 @@ int	pipex(char **av)
 	pid = fork();
 	if (pid > 0)
 	{
+		printf("순서 체크\n");
+		// printf("pipefd %d\n", pipefd);
 		redirect_out(av[4]);
 		connect_pipe(pipefd, STDIN_FILENO);
+		printf("MMMM]\n");
 		run_cmd(av[3]);
 	}
 	else if (pid == 0)
 	{
+		printf("체크체크\n");
+		// =printf("pipefd %d\n", pipefd);
 		redirect_in(av[1]);
 		connect_pipe(pipefd, STDOUT_FILENO);
 		run_cmd(av[2]);
