@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*   pipex_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/22 20:57:27 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/22 20:59:41 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 static void	cmd_init(char *argv, t_cmd *strt)
 {
@@ -42,7 +42,7 @@ int			redirect_out(const char *file)
 {
 	int fd;
 
-	fd = open(file, O_RDWR | O_CREAT | O_APPEND, 0644);
+	fd = open(file, O_RDWR | O_CREAT, 0644);
 	if (fd < 0)
 	{
 		perror(file);
@@ -72,5 +72,22 @@ int			redirect_in(const char *file)
 	}
 	dup2(fd, STDIN_FILENO);
 	close(fd);
+	return (0);
+}
+
+int		px_strcmp(char *str1, char *str2)
+{
+	int	i;
+
+	i = 0;
+	while (str1[i])
+	{
+		if (str1[i] != str2[i])
+			return (1);
+		else
+			i++;
+	}
+	if (str1[i] != '\0' || str2[i] != '\0')
+		return (1);
 	return (0);
 }
