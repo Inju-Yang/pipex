@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/24 03:08:25 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/24 04:33:47 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ void		close_pipe(int pipefd[2])
 	close(pipefd[1]);
 }
 
-int			out_to_stdout(const char *file)
+int			tmp_to_stdout(void)
 {
 	int fd;
 
-	fd = open(file, O_RDWR | O_CREAT | O_APPEND, 0644);
+	fd = open("out", O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		perror(file);
+		perror("out file error");
 		return (-1);
 	}
 	dup2(fd, 1);
@@ -66,22 +66,21 @@ int			make_tmp()
 	fd = open("tmp", O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		perror("tmp error\n");
+		perror("tmp file error\n");
 		return (-1);
 	}
 	dup2(fd, 1);
-	// dup2(fd, 0);
 	return (0);
 }
 
-int			in_to_stdin(const char *file)
+int			tmp_to_stdin()
 {
 	int fd;
 
-	fd = open(file, O_RDONLY);
+	fd = open("tmp", O_RDONLY);
 	if (fd < 0)
 	{
-		perror(file);
+		perror("tmp file opened");
 		return (-1);
 	}
 	dup2(fd, 0);

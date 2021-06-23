@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:32:26 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/24 02:25:55 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/24 04:33:15 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct	s_cmd
 int				main(int ac, char **av);
 int				pipex(char **av);
 
-int				in_to_stdin(const char *file);
-int				out_to_stdout(const char *file);
+int				tmp_to_stdin(void);
+int				tmp_to_stdout(void);
 void			run_cmd(char *cmd);
 void			close_pipe(int pipefd[2]);
 int			make_tmp();
