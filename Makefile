@@ -38,7 +38,7 @@ clean:
 	$(RM) $(PIPEX_O) $(PIPE_B_O) $(NAME)
 
 fclean: clean
-	$(RM) out
+	$(RM) out tmp
 	make fclean -C $(LIBFT_D)
 
 re:	fclean all
