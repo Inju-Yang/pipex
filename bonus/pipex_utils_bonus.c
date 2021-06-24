@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/24 04:33:47 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/24 17:25:19 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ void		run_cmd(char *cmd)
 	t_cmd	cmd_src;
 
 	i = 0;
+	printf("how many times\n");
 	find_cmd_path(cmd, &cmd_src);
 	while (i < 5)
 		execve(cmd_src.cmd[i++], cmd_src.argv, cmd_src.envp);
 	perror(cmd_src.argv[0]);
+	exit(1);
 }
 
 void		close_pipe(int pipefd[2])
@@ -44,32 +46,18 @@ void		close_pipe(int pipefd[2])
 	close(pipefd[1]);
 }
 
-int			tmp_to_stdout(void)
+int			tmp_to_stdout(char *file)
 {
 	int fd;
 
-	fd = open("out", O_RDWR | O_CREAT | O_APPEND, 0644);
+	fd = open(file, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		perror("out file error");
+		perror(file);
 		return (-1);
 	}
 	dup2(fd, 1);
 	close(fd); //close는 왜?
-	return (0);
-}
-
-int			make_tmp()
-{
-	int	fd;
-
-	fd = open("tmp", O_RDWR | O_CREAT | O_APPEND, 0644);
-	if (fd < 0)
-	{
-		perror("tmp file error\n");
-		return (-1);
-	}
-	dup2(fd, 1);
 	return (0);
 }
 
@@ -88,6 +76,35 @@ int			tmp_to_stdin()
 	return (0);
 }
 
+int			out_to_stdout(const char *file)
+{
+	int fd;
+
+	fd = open(file, O_RDWR | O_CREAT, 0644);
+	if (fd < 0)
+	{
+		perror(file);
+		return (-1);
+	}
+	dup2(fd, 1);
+	close(fd); //close는 왜?
+	return (0);
+}
+
+int			in_to_stdin(const char *file)
+{
+	int fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+	{
+		perror(file);
+		return (-1);
+	}
+	dup2(fd, 0);
+	close(fd);
+	return (0);
+}
 
 int		px_strcmp(char *str1, char *str2)
 {
