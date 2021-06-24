@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/24 17:25:19 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/24 19:43:08 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void		run_cmd(char *cmd)
 	t_cmd	cmd_src;
 
 	i = 0;
-	printf("how many times\n");
 	find_cmd_path(cmd, &cmd_src);
 	while (i < 5)
 		execve(cmd_src.cmd[i++], cmd_src.argv, cmd_src.envp);

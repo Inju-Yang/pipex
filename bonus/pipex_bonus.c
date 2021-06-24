@@ -6,13 +6,16 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:30:32 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/24 18:41:32 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/24 20:23:22 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
+void	make_stdout(void)
+{
 
+}
 
 int	multi_pipe(int ac, char **av)
 {
@@ -88,19 +91,22 @@ int	main(int ac, char **av)
 		if (pid > 0)
 			wait(NULL);
 		else if (pid == 0)
-			delete_tmp();
+		{
+			if (px_strcmp(av[1], "here_doc") == 0)
+				delete_tmp();
+			else
+				make_stdout();
+		}
 	}
 	else if (pid == 0)
 	{
-		if (ac > 6)
-			multi_pipe(ac, av);
-		else if (px_strcmp(av[1], "here_doc") == 0)
+		if (px_strcmp(av[1], "here_doc") == 0)
 		{
 			here_doc(ac, av);
 			here_doc_cmd(av);
 		}
-		// else
-		// 	multi_pipe(ac, av);
+		else
+			multi_pipe(ac, av);
 	}
 	return (0);
 }
