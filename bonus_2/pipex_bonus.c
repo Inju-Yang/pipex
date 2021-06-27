@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:30:32 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/25 21:06:01 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/26 22:33:11 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,58 +31,74 @@ void	make_stdout(int ac, char **av, t_cmd *m_pipe, int i)
 	run_cmd(av[ac - 2]);
 }
 
-void	make_stdin(char **av, t_cmd *m_pipe)
+void	make_stdin(char **av)
 {
+	int	pipefd[2];
+
 	printf("this is first\n");
 	in_to_stdin(av[1]);
-	dup2(m_pipe->m_fd[0][1], 1);
-	close(m_pipe->m_fd[0][0]);
+	printf("in?\n");
+	dup2(pipefd[1], 1);
+	close(pipefd[0]);
 	run_cmd(av[2]);
 }
 
 int	multi_pipe(int ac, char **av, t_cmd *m_pipe)
 {
-	pid_t	pid[ac - 4];
+	int		fd[2];
+	pid_t	pid;
 	int		pipe_cnt;
 	int		i;
+	int		status;
 
-	printf("???????\n");
 	pipe_cnt = (ac - 4);
 	fd_init(pipe_cnt, m_pipe);
-	i = -1;
-	while (++i < pipe_cnt)
+	if ((pipe(m_pipe->m_fd[0])) == -1)
+		error_msg("pipe error\n");
+	pid = fork();
+	if (pid < 0)
+		error_msg("pid error\n");
+	if (pid > 0)
 	{
-		printf("DLWP DLRJEH DKSEHLA?\n");
-		// printf("sdfjsfjksdfkjsfd>> %d\n", (pipe(m_pipe->m_fd[i])));
-		if ((pipe(m_pipe->m_fd[i])) == -1)
-			error_msg("pipe error\n");
-		pid[i] = fork();
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			printf("real fin\n");
 	}
-	printf("%d\n", i);
-	i = -1;
-	while (++i < pipe_cnt)
+	else if (pid == 0)
 	{
-		printf("this is i %d\n", i);
-		if (pid[i] > 0)
+		i = -1;
+		while (++i < pipe_cnt)
 		{
-			wait(NULL);
-			make_stdout(ac, av, m_pipe, i);
+			// waitpid(pid, &status, 0);
+			// if(WIFEXITED(status))
+			// 	printf("last pang!\n");
+			// printf("[%d] ", i);
+			pipe(fd);
+			pid = fork();
+			if (pid <= 0)
+				break;
 		}
-		else if (pid[i] == 0)
-			make_stdin(av, m_pipe);
-		else
+		printf("check i %d\n", i);
+		if (pid == 0 && i == 0)
+			make_stdin(av);
+		else if (pid == 0)
 		{
-			close(m_pipe->m_fd[i][1]);
-			dup2(m_pipe->m_fd[i][0], 0);
-			dup2(m_pipe->m_fd[i + 1][1], 1);
-			close(m_pipe->m_fd[i + 1][0]);
+			printf("check %d\n", i);
+			close(fd[1]);
+			pipe(fd);
+			dup2(fd[0], 0);
+			dup2(fd[1], 1);
+			close(fd[0]);
 			run_cmd(av[i + 2]);
 		}
-		printf("what can i do\n");
+		else if (pid > 0)
+		{
+			waitpid(pid, &status, 0);
+			if(WIFEXITED(status))
+				printf("last pang!\n");
+		}
+		printf("real finn\n");
 	}
-	while (++i < pipe_cnt)
-		
-	printf("sejfalhio\n");
 	return (0);
 }
 
