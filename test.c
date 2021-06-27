@@ -15,16 +15,20 @@ int	main(void)
 	pid = fork();
 	if (pid > 0)
 	{
-		wait(NULL);
+		wait(NULL); //1ㄷㅐ가 2대를
 		printf("real fin\n");
 	}
 	else if (pid == 0)
 	{
 		for (i = 0; i < 10; i++)	
 		{
+			printf("pid is %d\n", pid);
 			pid = fork();
 			if (pid == 0 || pid == -1)
 				break;
+			waitpid(pid, &status, 0);//2대가 5번 자식을
+			if(WIFEXITED(status))
+				printf("parent waiting\n");
 		}
 		printf("i meoim? %d\n", i);
 		if (pid == -1)
@@ -44,7 +48,7 @@ int	main(void)
 		}
 		else if (pid > 0)
 		{
-			waitpid(pid, &status, 0);
+			waitpid(pid, &status, 0);//2대가 마지막 자식을
 			if(WIFEXITED(status))
 				printf("parent here\n");
 		}

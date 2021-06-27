@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:30:32 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/26 22:33:11 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/27 20:36:27 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,85 +19,105 @@ void	fd_init(int pipe_cnt, t_cmd *m_pipe)
 	m_pipe->m_fd = malloc(sizeof(int *) * (pipe_cnt));
 	while (++i < pipe_cnt)
 		m_pipe->m_fd[i] = malloc(sizeof(int) * 2);
+	i = -1;
+	while (++i < pipe_cnt)
+		m_pipe->m_fd = malloc(sizeof(int) * pipe_cnt);
 }
 
 void	make_stdout(int ac, char **av, t_cmd *m_pipe, int i)
 {
-	close(m_pipe->m_fd[i + 1][0]);
-	printf("this is last : %s\n", av[ac - 2]);
+	// printf("last point check\n");
+	// printf("%d\n", m_pipe->m_fd[i][0]);
 	out_to_stdout(av[ac - 1]);
 	dup2(m_pipe->m_fd[i][0], 0);
-	close(m_pipe->m_fd[i + 1][1]);
+	close(m_pipe->m_fd[i][1]);
 	run_cmd(av[ac - 2]);
 }
 
-void	make_stdin(char **av)
+void	make_stdin(char **av, t_cmd *m_pipe, int i)
 {
-	int	pipefd[2];
+	// int	pipefd[2];
 
 	printf("this is first\n");
+	printf("pipefd[0] %d [1] %d\n", m_pipe->m_fd[i][0], m_pipe->m_fd[i][1]);
+	printf("pipefd[0] %d [1] %d\n", m_pipe->m_fd[i +1][0], m_pipe->m_fd[i+1][1]);
 	in_to_stdin(av[1]);
-	printf("in?\n");
-	dup2(pipefd[1], 1);
-	close(pipefd[0]);
+	// printf("in?\n");
+	dup2(m_pipe->m_fd[i + 1][1], 1);
+	close(m_pipe->m_fd[i][0]);
 	run_cmd(av[2]);
 }
 
 int	multi_pipe(int ac, char **av, t_cmd *m_pipe)
 {
-	int		fd[2];
+	// int		m_pipe->fd[2];
 	pid_t	pid;
+	pid_t	first_pid;
 	int		pipe_cnt;
 	int		i;
 	int		status;
 
-	pipe_cnt = (ac - 4);
+	pipe_cnt = (ac - 3);
 	fd_init(pipe_cnt, m_pipe);
-	if ((pipe(m_pipe->m_fd[0])) == -1)
-		error_msg("pipe error\n");
+	i = -1;
+	while (++i < pipe_cnt)
+		if (pipe(m_pipe->m_fd[i]) == -1)
+			error_msg("pipe_error\n");
 	pid = fork();
 	if (pid < 0)
 		error_msg("pid error\n");
 	if (pid > 0)
 	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			printf("real fin\n");
+		wait(NULL);
 	}
-	else if (pid == 0)
+	else if (pid == 0)//2대
 	{
 		i = -1;
 		while (++i < pipe_cnt)
 		{
-			// waitpid(pid, &status, 0);
-			// if(WIFEXITED(status))
-			// 	printf("last pang!\n");
-			// printf("[%d] ", i);
-			pipe(fd);
+			printf("pipefd[0] %d [1] %d\n", m_pipe->m_fd[i][0], m_pipe->m_fd[i][1]);
+			// printf("sorega pid %d\n",	pid);
 			pid = fork();
+			printf("%d\n", pid);
+			m_pipe->for_wait[i] = pid;//2대
+			printf("siehafl\n");
+			if (i == 0 && pid > 0)
+				first_pid = pid;
+			printf("first_pid %d, pid %d\n", first_pid, pid);
 			if (pid <= 0)
 				break;
+			// waitpid(pid, &status, 0);//2대가 5번 자식을
+			// if(WIFEXITED(status))
+			// 	printf("parent waiting\n");
 		}
-		printf("check i %d\n", i);
-		if (pid == 0 && i == 0)
-			make_stdin(av);
-		else if (pid == 0)
+		if (pid < 0)
+			error_msg("pid error\n");
+		// printf("check i %d\n", i);
+		if (pid == 0 && i == 0)//3ㅡ대 1번
+			make_stdin(av, m_pipe, i);
+		else if (pid == 0)//3대 1번 이후
 		{
 			printf("check %d\n", i);
-			close(fd[1]);
-			pipe(fd);
-			dup2(fd[0], 0);
-			dup2(fd[1], 1);
-			close(fd[0]);
-			run_cmd(av[i + 2]);
+			close(m_pipe->m_fd[i][1]);
+			// pipe(m_pipe->m_fd);
+			printf("pipem_pipe->m_fd[0] %d [1] %d\n", m_pipe->m_fd[i][0], m_pipe->m_fd[i][1]);
+			printf("pipefd[0] %d [1] %d\n", m_pipe->m_fd[i +1][0], m_pipe->m_fd[i+1][1]);
+			dup2(m_pipe->m_fd[i][0], 0);
+			dup2(m_pipe->m_fd[i + 1][1], 1);
+			close(m_pipe->m_fd[i][0]);
+			run_cmd(av[i + 1]);
 		}
 		else if (pid > 0)
 		{
-			waitpid(pid, &status, 0);
-			if(WIFEXITED(status))
-				printf("last pang!\n");
+			printf("aeihfl\n");
+			i = 0;
+			while (i++ < pipe_cnt)
+			{
+				waitpid(m_pipe->for_wait[i], &status, 0);
+			}
 		}
-		printf("real finn\n");
+		printf("i value %d\n", i);
+		make_stdout(ac, av, m_pipe, i - 1);
 	}
 	return (0);
 }

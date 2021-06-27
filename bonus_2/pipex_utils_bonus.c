@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/25 20:38:57 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/27 17:14:25 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int			in_to_stdin(const char *file)
 		perror(file);
 		return (-1);
 	}
+	// printf("fd %d\n",fd);
 	dup2(fd, 0);
 	close(fd);
 	return (0);
