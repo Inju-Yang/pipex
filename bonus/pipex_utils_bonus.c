@@ -6,13 +6,13 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/28 21:42:46 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/29 22:04:02 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	error_msg(char *str)
+void		error_msg(char *str)
 {
 	perror(str);
 	exit(1);
@@ -41,8 +41,7 @@ void		run_cmd(char *cmd)
 	find_cmd_path(cmd, &cmd_src);
 	while (i < 5)
 		execve(cmd_src.cmd[i++], cmd_src.argv, cmd_src.envp);
-	perror(cmd_src.argv[0]);
-	exit(1);
+	error_msg(cmd_src.argv[0]);
 }
 
 void		close_pipe(int pipefd[2])
@@ -51,74 +50,7 @@ void		close_pipe(int pipefd[2])
 	close(pipefd[1]);
 }
 
-// void		close_multi_pipe(t_cmd *m_pipe, int cmd_count)
-// {
-// 	close(m_pipe->m_fd[i][0]);
-// 	close(m_pipe->m_fd[i][1]);
-// }
-
-int			tmp_to_stdout(char *file)
-{
-	int fd;
-
-	fd = open(file, O_RDWR | O_CREAT | O_APPEND, 0644);
-	if (fd < 0)
-	{
-		perror(file);
-		return (-1);
-	}
-	dup2(fd, 1);
-	close(fd); //close는 왜?
-	return (0);
-}
-
-int			tmp_to_stdin()
-{
-	int fd;
-
-	fd = open("tmp", O_RDONLY);
-	if (fd < 0)
-	{
-		error_msg("tmp file opened");
-		return (-1);
-	}
-	dup2(fd, 0);
-	close(fd);
-	return (0);
-}
-
-int			out_to_stdout(const char *file)
-{
-	int fd;
-
-	fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0644);
-	if (fd < 0)
-	{
-		perror(file);
-		exit (1);
-	}
-	dup2(fd, 1);
-	close(fd); //close는 왜?
-	return (0);
-}
-
-int			in_to_stdin(const char *file)
-{
-	int fd;
-
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-	{
-		perror(file);
-		exit (1);
-	}
-	// printf("fd %d\n",fd);
-	dup2(fd, 0);
-	close(fd);
-	return (0);
-}
-
-int		px_strcmp(char *str1, char *str2)
+int			px_strcmp(char *str1, char *str2)
 {
 	int	i;
 

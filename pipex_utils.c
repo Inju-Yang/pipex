@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/23 23:07:31 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/29 20:33:58 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void		run_cmd(char *cmd)
 	find_cmd_path(cmd, &cmd_src);
 	while (i < 5)
 		execve(cmd_src.cmd[i++], cmd_src.argv, cmd_src.envp);
-	perror(cmd_src.argv[0]);
+	error_msg(cmd_src.argv[0]);
 }
 
 void		close_pipe(int pipefd[2])
@@ -51,11 +51,11 @@ int			out_to_stdout(const char *file)
 	fd = open(file, O_RDWR | O_CREAT, 0644);
 	if (fd < 0)
 	{
-		perror(file);
+		error_msg(file);
 		return (-1);
 	}
 	dup2(fd, 1);
-	close(fd); //close는 왜?
+	close(fd);
 	return (0);
 }
 
@@ -66,7 +66,7 @@ int			in_to_stdin(const char *file)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		perror(file);
+		error_msg(file);
 		return (-1);
 	}
 	dup2(fd, 0);

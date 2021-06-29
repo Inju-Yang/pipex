@@ -6,13 +6,13 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 16:34:40 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/24 16:36:31 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/29 21:29:37 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	delete_tmp()
+void	delete_tmp(void)
 {
 	char *for_rm[3];
 
@@ -22,7 +22,7 @@ void	delete_tmp()
 	execve("/bin/rm", for_rm, 0);
 }
 
-int	here_doc_cmd(char **av)
+int		here_doc_cmd(char **av)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -48,21 +48,20 @@ int	here_doc_cmd(char **av)
 	return (0);
 }
 
-int			make_tmp()
+int		make_tmp(void)
 {
 	int	fd;
 
 	fd = open("tmp", O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		perror("tmp file error\n");
+		error_msg("tmp file error\n");
 		return (-1);
 	}
-	// dup2(fd, 1);
 	return (fd);
 }
 
-int	here_doc(int ac, char **av)
+int		here_doc(int ac, char **av)
 {
 	char	*line;
 	int		value;
@@ -72,18 +71,17 @@ int	here_doc(int ac, char **av)
 
 	if (ac != 6)
 		return (0);
-	// pipe(pipefd);
 	value = 1;
 	prompt = "pipe heredoc> ";
 	write(1, prompt, ft_strlen(prompt));
 	fd = make_tmp();
 	while ((value = px_gnl(&line)) > 0)
-	{	
+	{
 		strlen = ft_strlen(line);
 		if (px_strcmp(line, av[2]) == 0)
 		{
 			close(fd);
-			return(0);
+			return (0);
 		}
 		write(fd, line, strlen);
 		write(fd, "\n", 1);

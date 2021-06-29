@@ -6,13 +6,19 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:30:32 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/23 23:00:51 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/29 20:33:34 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	pipex(char **av)
+void	error_msg(char *str)
+{
+	perror(str);
+	exit(1);
+}
+
+int		pipex(char **av)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -38,7 +44,7 @@ int	pipex(char **av)
 	return (0);
 }
 
-int	main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	pid_t	pid;
 
@@ -46,11 +52,10 @@ int	main(int ac, char **av)
 		return (0);
 	pid = fork();
 	if (pid < 0)
-		perror("Pid Error here\n");
-	if (pid > 0)// 부모프로세서가 됐다면 이 프로세서는 기다리기
+		error_msg("Pid Error here\n");
+	if (pid > 0)
 		wait(NULL);
-		// printf("그게 지금 나이면 돼~\n");
-	else if (pid == 0)//자식프로세서가 됐다면 이 프로세서 실행
+	else if (pid == 0)
 		pipex(av);
 	return (0);
 }

@@ -11,7 +11,8 @@ PIPE_B_C		=	bonus/pipex_bonus.c\
 					bonus/pipex_utils_bonus.c\
 					bonus/pipex_gnl.c\
 					bonus/heredoc_bonus.c\
-					bonus/multi_bonus.c
+					bonus/multi_bonus.c\
+					bonus/inout_bonus.c
 
 PIPEX_O			=	$(PIPEX_C:.c=.o)
 PIPE_B_O		=	$(PIPE_B_C:.c=.o)
@@ -40,7 +41,7 @@ clean:
 	$(RM) $(PIPEX_O) $(PIPE_B_O) $(NAME)
 
 fclean: clean
-	$(RM) out tmp
+	$(RM) out
 	make fclean -C $(LIBFT_D)
 
 re:	fclean all
