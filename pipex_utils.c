@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 18:39:20 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/29 20:33:58 by inyang           ###   ########.fr       */
+/*   Updated: 2021/06/29 22:15:31 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int			out_to_stdout(const char *file)
 	fd = open(file, O_RDWR | O_CREAT, 0644);
 	if (fd < 0)
 	{
-		error_msg(file);
+		error_msg("out file error\n");
 		return (-1);
 	}
 	dup2(fd, 1);
@@ -66,7 +66,7 @@ int			in_to_stdin(const char *file)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		error_msg(file);
+		error_msg("out file error\n");
 		return (-1);
 	}
 	dup2(fd, 0);
