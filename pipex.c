@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 16:30:32 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/29 20:33:34 by inyang           ###   ########.fr       */
+/*   Updated: 2021/07/05 16:05:49 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		main(int ac, char **av)
 	pid_t	pid;
 
 	if (ac != 5)
-		return (0);
+		error_msg("ac error\n");
 	pid = fork();
 	if (pid < 0)
 		error_msg("Pid Error here\n");
