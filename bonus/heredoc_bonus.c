@@ -6,7 +6,7 @@
 /*   By: inyang <inyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 16:34:40 by inyang            #+#    #+#             */
-/*   Updated: 2021/06/29 21:29:37 by inyang           ###   ########.fr       */
+/*   Updated: 2021/07/05 16:20:08 by inyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		here_doc(int ac, char **av)
 	int		fd;
 
 	if (ac != 6)
-		return (0);
+		error_msg("ac error\n");
 	value = 1;
 	prompt = "pipe heredoc> ";
 	write(1, prompt, ft_strlen(prompt));
